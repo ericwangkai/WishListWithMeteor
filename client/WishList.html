@@ -1,0 +1,137 @@
+<head>
+  <title>WishList</title>
+</head>
+
+<body>
+	<div id="container">
+	   {{> header }}
+	   <div id="con">
+	     {{> main }}
+	   </div>    
+	   <footer></footer>
+	</div>
+</body>
+
+<template name="header">
+	<div class="row">
+		<div class="span5"></div>
+		<div class="span5">
+			<h1>This is Header!</h1>
+		</div>
+		<div>
+			{{loginButtons align="right"}}
+		</div>
+	</div>
+</template>
+
+<template name="main">
+	<div class="container-fluid">
+	  <div class="row-fluid">
+	    <div class="span2">
+			{{> leftmenu }}
+	    </div>
+	    <div class="span10">
+	      	{{> rightboard }}
+	    </div>
+	  </div>
+	</div>
+</template>
+
+<template name="leftmenu">
+	<div class="nav">
+		<ul class="nav nav-list">
+			<li class="nav-header">SideBar</li>
+			<li><a href="#">My WishList</a></li>
+			<li><a href="#">My Big Days</a></li>
+		</ul>
+	</div>
+</template>
+
+
+<template name="rightboard">
+	<div>
+		<div id="items-view" class="span8">
+			<div class="control-group info">
+				<label class="control-label" for="new-wish"><h3>我想要:</h3></label>
+				<div class="controls">
+					<input type="text" id="new-wish" placeholder="从这里输入您的心仪物品吧" />
+					<span class="help-inline">输入心愿后请按回车加入心愿单</span>
+				</div>					
+			</div>
+			<hr/>
+			<div>
+				<table class="table table-hover">
+				  <caption><span class="text-left text-info"><h3>心愿单里已有：<small class="text-info">双击心愿进行编辑</small></h3></span></caption>
+				  <thead>
+				    <tr>
+				      <th>我想要</th>
+					  <th>价格</th>
+				      <th>期望数量/</th>
+					  <th>已收到</th>
+					  <th>添加日期</th>
+					  <th>操作</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+						{{#each wishList}}
+						{{> wish_item }}
+						{{/each}}
+				  </tbody>
+				</table>
+			</div>
+		</div>
+		<div class="span2">
+			<div>
+				<p>My Friends Wish Lists</p>
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="wish_item">
+	<tr class="wishItem">
+	    {{#if editing}}
+		<td>
+	      <div class="edit input-append">
+	        <input id="wish-item-input" type="text" value="{{text}}" />
+			<button class="btn" id="search-button" type="button">搜一搜</button>
+	      </div>
+	  	</td>
+		<td>
+			<input id="wish-item-price" class="input-mini" type="text" value="{{price}}" />
+		</td>
+		<td>
+			<input id="wish-item-quantity" class="input-mini" type="text" value="{{quantity}}" />
+		</td>
+		<td>
+			<input id="wish-item-received" class="input-mini" type="text" value="{{quantity_received}}" />
+		</td>
+		<td>
+			<input id="wish-item-created-date" class="input-small" type="text" value="{{created_date}}" />
+		</td>
+		<td>
+			<button class="btn btn-primary" id="save-button" type="button">保存</button>
+			<button class="btn" id="cancel-button" type="button">取消</button>
+		</td>
+	    {{else}}
+		<td>
+			{{text}}
+		</td>
+		<td>
+			{{price}}
+		</td>
+		<td>
+			{{quantity}}
+		</td>
+		<td>
+			{{quantity_received}}
+		</td>
+		<td>
+			{{created_date}}
+		</td>
+		<td>
+			<button class="btn" id="delete-button" type="button">删除</button>
+		</td>
+	    {{/if}}
+	</tr>
+</template>

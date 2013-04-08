@@ -1,0 +1,8 @@
+/* CSS declarations go here */
+#wish-list .wishItem {
+    padding: 3px 6px;
+}
+
+#wish-list .wishItem .edit input {
+    margin-left: 35px;
+}

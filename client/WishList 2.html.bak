@@ -1,0 +1,87 @@
+<head>
+  <title>WishList</title>
+</head>
+
+<body>
+	<div id="container">
+	   {{> header }}
+	   <div id="con">
+	     {{> main }}
+	   </div>    
+	   <footer></footer>
+	</div>
+</body>
+
+<template name="header">
+	<div class="row">
+		<div class="span5"></div>
+		<div class="span5">
+			<h1>This is Header!</h1>
+		</div>
+	</div>
+</template>
+
+<template name="main">
+	<div class="container-fluid">
+	  <div class="row-fluid">
+	    <div class="span3">
+			{{> leftmenu }}
+	    </div>
+	    <div class="span9">
+	      	{{> rightboard }}
+	    </div>
+	  </div>
+	</div>
+</template>
+
+<template name="leftmenu">
+	<div class="nav">
+		<ul class="nav nav-list">
+			<li class="nav-header">SideBar</li>
+			<li><a href="#">My WishList</a></li>
+			<li><a href="#">My Big Days</a></li>
+		</ul>
+	</div>
+</template>
+
+
+<template name="rightboard">
+	<div>
+		<div id="items-view" class="span8">
+			<div class="control-group info">
+				<label class="control-label" for="new-wish"><h3>我想要:</h3></label>
+				<div class="controls">
+					<input type="text" id="new-wish" placeholder="从这里输入您的心仪物品吧" />
+					<span class="help-inline">输入心愿后请按回车加入心愿单</span>
+				</div>					
+			</div>
+			<ul id="wish-list" class="unstyled">
+				<li>
+					<span><h3>心愿单里已有：</h3></span>
+				</li>
+				{{#each wishList}}
+				{{> wish_item }}
+				{{/each}}
+			</ul>
+		</div>
+		<div class="span2">
+			<div>
+				<p>My Friends Wish Lists</p>
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="wish_item">
+	<li class="wishItem">
+	    {{#if editing}}
+	      <div class="edit input-append">
+	        <input id="wish-item-input" type="text" value="{{text}}" />
+			<button class="btn" id="search-button" type="button">搜一搜</button>
+			<button class="btn" id="cancel-button" type="button">取消编辑</button>
+	      </div>
+	    {{else}}
+	        <div class="todo-text">{{text}}</div>
+	    {{/if}}
+	</li>
+</template>
