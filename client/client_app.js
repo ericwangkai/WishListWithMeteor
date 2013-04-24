@@ -1,25 +1,40 @@
-WishList = new Meteor.Collection("wishlist");
+//WishList = new Meteor.Collection("wishlist");
 
-var wishHandle = Meteor.subscribe('wishlist');
+Meteor.subscribe('myWishList');
 
 Session.setDefault('editing_itemname', null);
 
 Template.rightboard.events({
 	'keyup #new-wish': function(e,t){
 		if(e.which === 13 && e.target.value !== ""){
-			addNewWish(e.target.value);
+    		addNewWish(e.target.value, "");
 			e.target.value = "";
 		}
+	},
+    'click #search-51-button': function(e,tmpl){    	
+		//Meteor.http.get("GET", "http://www.51bi.com/search/?keyword=" + e.target.value, followRedirects=true);
+        if( tmpl.find("#new-wish").value !== ""){
+		    Router.goSearch("http://www.51bi.com/search/?keyword=" + tmpl.find("#new-wish").value);
+        }
+	},
+    'click #add-to-button': function(e,tmpl){     
+        var value = tmpl.find("#new-wish").value;
+		if(value !== ""){
+    		addNewWish(value, "");
+			tmpl.find("#new-wish").value = "";
+		}
 	}
+    
 });
 
 Template.rightboard.wishList = function(){
-	return WishList.find({});
-}
+    console.log("Client WishList -> " + WishList.find().count());
+    return WishList.find({});
+};
 
 Template.wish_item.editing = function(){
 	return Session.equals('editing_itemname', this._id);
-}
+};
 
 Template.wish_item.events({
 	'dblclick .wishItem': function(evt, tmpl){
@@ -38,7 +53,7 @@ Template.wish_item.events({
 			Session.set('editing_itemname', null);
 		}
 	},
-	'click #search-button': function(e,tmpl){		
+	'click #search-button-in-list': function(e,tmpl){		
 		//Meteor.http.get("GET", "http://www.51bi.com/search/?keyword=" + e.target.value, followRedirects=true);
 		Router.goSearch("http://www.51bi.com/search/?keyword=" + tmpl.find("#wish-item-input").value);
 	},
@@ -78,18 +93,18 @@ var activateInput = function (input) {
 var getValue = function(tmpl, element_id){
 	var element = tmpl.find(element_id);
 	return tmpl.find(element_id).value;
-}
+};
 
-function addNewWish(text){
-	WishList.insert({
-		text: text,
-		timestamp: (new Date()).getTime()
-	});
+function addNewWish(text, price){
+    Meteor.call('createWishItem', {
+        productDesc: text,
+        price: price
+    });
 };
 
 function updateWish(text, price, quantity, quantity_received, created_date, id){
 	WishList.update(id, {$set: {text: text, price: price, quantity: quantity, quantity_received: quantity_received, created_date: created_date}});
-}
+};
 
 var ClientRouter = Backbone.Router.extend({
   goSearch: function (url) {
@@ -97,6 +112,18 @@ var ClientRouter = Backbone.Router.extend({
 	console.log(url);
 	window.open(url);
 	
+  }
+});
+
+Handlebars.registerHelper("dateFormat", function(context, block) {
+  if (window.moment && ("" !== context && context !== null)) {
+    //console.log("Moment Exist and load sucessfully");
+    var f = block.hash.format || "MMM Do, YYYY";
+//    console.log("Date will be formated to -> " + f);
+    return moment(context).format(f);
+  }else{
+      //console.log("Moment Exist and load failed or date is null");
+    return context;   //  moment plugin not available. return data as is.
   }
 });
 

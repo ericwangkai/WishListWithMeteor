@@ -53,8 +53,23 @@
 		<div id="items-view" class="span8">
 			<div class="control-group info">
 				<label class="control-label" for="new-wish"><h3>我想要:</h3></label>
-				<div class="controls">
+				<div class="input-append">
 					<input type="text" id="new-wish" placeholder="从这里输入您的心仪物品吧" />
+                    <div class="btn-group">
+                      <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
+                        先去比价
+                        <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu">
+                          <li><a tabindex="-1" href="#" id="search-51-button">51比价</a></li>
+                          <li><a tabindex="-1" href="#" id="search-yitao-button">一淘</a></li>
+                          <li><a tabindex="-1" href="#" id="search-bibijia-button">比比价</a></li>
+                      </ul>
+                    </div>
+                    <!--
+                    <button class="btn btn-primary" id="search-button" type="button">搜一搜</button>
+                    -->
+                    <button class="btn btn-info" id="add-to-button" type="button">以后再搜</button>
 					<span class="help-inline">输入心愿后请按回车加入心愿单</span>
 				</div>					
 			</div>
@@ -67,7 +82,7 @@
 				      <th>我想要</th>
 					  <th>价格</th>
 				      <th>期望数量/</th>
-					  <th>已收到</th>
+				
 					  <th>添加日期</th>
 					  <th>操作</th>
 				    </tr>
@@ -94,7 +109,7 @@
 		<td>
 	      <div class="edit input-append">
 	        <input id="wish-item-input" type="text" value="{{text}}" />
-			<button class="btn" id="search-button" type="button">搜一搜</button>
+			<button class="btn" id="search-button-in-list" type="button">搜一搜</button>
 	      </div>
 	  	</td>
 		<td>
@@ -103,11 +118,11 @@
 		<td>
 			<input id="wish-item-quantity" class="input-mini" type="text" value="{{quantity}}" />
 		</td>
-		<td>
+		<!--td>
 			<input id="wish-item-received" class="input-mini" type="text" value="{{quantity_received}}" />
-		</td>
+		</td-->
 		<td>
-			<input id="wish-item-created-date" class="input-small" type="text" value="{{created_date}}" />
+			<input id="wish-item-created-date" class="input-small" type="text" value="{{dateFormat created_date format="YYYY-MM-DD"}}" />
 		</td>
 		<td>
 			<button class="btn btn-primary" id="save-button" type="button">保存</button>
@@ -115,7 +130,11 @@
 		</td>
 	    {{else}}
 		<td>
-			{{text}}
+            {{#if url}}
+			<a href="{{url}}">{{text}}</a>
+            {{else}}
+                {{text}}
+            {{/if}}
 		</td>
 		<td>
 			{{price}}
@@ -123,11 +142,11 @@
 		<td>
 			{{quantity}}
 		</td>
-		<td>
+		<!--td>
 			{{quantity_received}}
-		</td>
+		</td-->
 		<td>
-			{{created_date}}
+			{{dateFormat created_date format="YYYY-MM-DD"}}
 		</td>
 		<td>
 			<button class="btn" id="delete-button" type="button">删除</button>
